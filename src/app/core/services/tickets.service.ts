@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Ticket } from '../../models/ticket.model';
 import { ClienteOcasional } from '../../models/cliente-ocasional.model';
 
@@ -15,6 +15,16 @@ export class TicketsService {
   // Métodos para tickets
   getAllTickets(): Observable<Ticket[]> {
     return this.http.get<Ticket[]>(this.apiUrl);
+  }
+
+  getTicketByEspacio(espacioId: number): Observable<Ticket | undefined> {
+    return this.getAllTickets().pipe(
+      map((tickets: Ticket[]) =>
+        tickets
+          .filter(ticket => !ticket.horaSalida) // Filtrar los que aún no han sido liberados
+          .find(ticket => ticket.espacio.id === espacioId) // Buscar el que tiene el espacio deseado
+      )
+    );
   }
 
   getTicketById(id: number): Observable<Ticket> {
@@ -37,6 +47,13 @@ export class TicketsService {
   getAllClientesOcasionales(): Observable<ClienteOcasional[]> {
     return this.http.get<ClienteOcasional[]>(`${this.apiUrl}/clientes-ocasionales`);
   }
+
+  getClienteOcasionalByPlaca(placa: string): Observable<ClienteOcasional | undefined> {
+    return this.getAllClientesOcasionales().pipe(
+      map(clientes => clientes.find(cliente => cliente.placa.toLowerCase() === placa.toLowerCase()))
+    );
+  }
+  
 
   getClienteOcasionalById(id: number): Observable<ClienteOcasional> {
     return this.http.get<ClienteOcasional>(`${this.apiUrl}/clientes-ocasionales/${id}`);

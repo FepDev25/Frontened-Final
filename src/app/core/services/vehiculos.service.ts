@@ -19,6 +19,11 @@ export class VehiculosService {
     return this.http.get<Vehiculo>(`${this.apiUrl}/${id}`);
   }
 
+  getVehiculoByPlaca(placa: string): Observable<Vehiculo> {
+    return this.http.get<Vehiculo>(`${this.apiUrl}/placa/${placa}`);
+  }
+
+
   createVehiculo(vehiculo: Vehiculo): Observable<Vehiculo> {
     return this.http.post<Vehiculo>(this.apiUrl, vehiculo);
   }
