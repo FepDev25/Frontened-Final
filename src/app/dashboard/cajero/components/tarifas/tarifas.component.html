@@ -1,0 +1,83 @@
+<div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4">Gestión de Tarifas</h1>
+  
+    <!-- Tarifa Activa -->
+    <div class="bg-green-100 p-4 mb-4 rounded shadow">
+      <h2 class="text-xl font-semibold">Tarifa Activa</h2>
+      <p *ngIf="tarifaActiva" class="text-lg font-bold text-green-700">${{ tarifaActiva.valor }}</p>
+      <p *ngIf="!tarifaActiva" class="text-gray-600">No hay una tarifa activa actualmente.</p>
+    </div>
+  
+    <!-- Formulario para Agregar Nueva Tarifa -->
+    <div class="bg-white p-6 shadow-md rounded-lg mb-4">
+      <h2 class="text-lg font-bold mb-2">Agregar Nueva Tarifa</h2>
+      <form [formGroup]="nuevaTarifaForm" (ngSubmit)="agregarTarifa()">
+        <label class="block text-sm font-medium text-gray-700">Valor</label>
+        <input type="number" formControlName="valor" class="border p-2 w-full rounded" min="0.01" step="0.01">
+  
+        <button type="submit" 
+                class="bg-green-500 text-white px-4 py-2 rounded mt-4 hover:bg-green-600"
+                [disabled]="nuevaTarifaForm.invalid">
+          Agregar Tarifa
+        </button>
+      </form>
+    </div>
+  
+    <!-- Tabla de Tarifas -->
+    <div class="bg-white p-6 shadow-md rounded-lg">
+      <h2 class="text-lg font-bold mb-2">Lista de Tarifas</h2>
+      <table class="w-full border-collapse border border-gray-300">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="border p-2">ID</th>
+            <th class="border p-2">Valor</th>
+            <th class="border p-2">Estado</th>
+            <th class="border p-2">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let tarifa of tarifas">
+            <td class="border p-2 text-center">{{ tarifa.id }}</td>
+            <td class="border p-2 text-center">${{ tarifa.valor }}</td>
+            <td class="border p-2 text-center">
+              <span *ngIf="tarifaActiva?.id === tarifa.id" class="text-green-600 font-semibold">Activa</span>
+              <span *ngIf="tarifaActiva?.id !== tarifa.id" class="text-gray-500">Inactiva</span>
+            </td>
+            <td class="border p-2 text-center">
+              <button class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600" 
+                      (click)="seleccionarTarifaParaEditar(tarifa)">
+                Editar
+              </button>
+              <button *ngIf="tarifaActiva?.id !== tarifa.id"
+                      class="bg-green-500 text-white px-3 py-1 rounded ml-2 hover:bg-green-600"
+                      (click)="activarTarifa(tarifa.id)">
+                Activar
+              </button>
+            <button *ngIf="tarifaActiva?.id !== tarifa.id"
+                    class="bg-red-500 text-white px-3 py-1 rounded ml-2 hover:bg-red-600"
+                    (click)="eliminarTarifa(tarifa.id)">
+                Eliminar
+            </button>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Formulario de Edición -->
+    <div *ngIf="tarifaEditando" class="bg-white p-6 shadow-md rounded-lg mt-4">
+      <h2 class="text-lg font-bold mb-2">Editar Tarifa</h2>
+      <form [formGroup]="tarifaForm" (ngSubmit)="guardarTarifa()">
+        <label class="block text-sm font-medium text-gray-700">Nuevo Valor</label>
+        <input type="number" formControlName="valor" class="border p-2 w-full rounded" min="0.01" step="0.01">
+  
+        <button type="submit" 
+                class="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600"
+                [disabled]="tarifaForm.invalid">
+          Guardar
+        </button>
+      </form>
+    </div>
+  </div>
+  

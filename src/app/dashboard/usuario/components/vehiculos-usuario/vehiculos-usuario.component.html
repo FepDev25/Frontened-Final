@@ -1,0 +1,60 @@
+<div class="container mx-auto p-6">
+    <h2 class="text-2xl font-bold text-indigo-800 mb-4">Mis Vehículos</h2>
+  
+    <!-- Formulario para agregar o modificar vehículo -->
+    <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+      <h3 class="text-xl font-semibold mb-4">{{ vehiculoSeleccionado ? 'Editar Vehículo' : 'Agregar Vehículo' }}</h3>
+      
+      <form [formGroup]="vehiculoForm" (ngSubmit)="guardarVehiculo()">
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700">Placa del Vehículo</label>
+          <input type="text" formControlName="placa" class="border p-2 w-full rounded" placeholder="Ej: ABC-1234">
+        </div>
+  
+        <div class="flex space-x-4">
+          <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
+            {{ vehiculoSeleccionado ? 'Actualizar' : 'Agregar' }}
+          </button>
+          
+          <button *ngIf="vehiculoSeleccionado" type="button" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition" 
+            (click)="cancelarEdicion()">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  
+    <!-- Listado de Vehículos -->
+    <div class="bg-white shadow-md rounded-lg p-6">
+      <h3 class="text-xl font-semibold mb-4">Lista de Vehículos</h3>
+  
+      <table class="min-w-full bg-white border border-gray-300 shadow-md rounded-lg overflow-hidden">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="py-2 px-4 border-b">#</th>
+            <th class="py-2 px-4 border-b">Placa</th>
+            <th class="py-2 px-4 border-b">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let vehiculo of vehiculos; let i = index" class="hover:bg-gray-100">
+            <td class="py-2 px-4 border-b">{{ i + 1 }}</td>
+            <td class="py-2 px-4 border-b">{{ vehiculo.placa }}</td>
+            <td class="py-2 px-4 border-b space-x-2">
+              <button class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition" (click)="editarVehiculo(vehiculo)">
+                ✏️ Editar
+              </button>
+              <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition" (click)="eliminarVehiculo(vehiculo.id)">
+                🗑️ Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  
+      <div *ngIf="vehiculos.length === 0" class="text-center text-gray-500 mt-4">
+        No tienes vehículos registrados.
+      </div>
+    </div>
+  </div>
+  

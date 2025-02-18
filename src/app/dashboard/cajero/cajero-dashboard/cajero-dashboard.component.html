@@ -1,0 +1,57 @@
+<div class="min-h-screen bg-gray-100 flex flex-col">
+  <!-- Barra de navegación -->
+  <nav class="bg-indigo-600 text-white p-4 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-xl font-bold">Panel de Cajero</h1>
+      <ul class="flex space-x-6">
+        <li>
+          <a routerLink="inicio-cajero" class="hover:underline px-3 py-2 rounded-md hover:bg-indigo-700 transition">
+            Inicio
+          </a>
+        </li>
+        <li>
+          <a routerLink="usuarios" class="hover:underline px-3 py-2 rounded-md hover:bg-indigo-700 transition">
+            Usuarios
+          </a>
+        </li>
+        <li>
+          <a routerLink="contratos" class="hover:underline px-3 py-2 rounded-md hover:bg-indigo-700 transition">
+            Contratos
+          </a>
+        </li>
+        <li>
+          <a routerLink="espacios" class="hover:underline px-3 py-2 rounded-md hover:bg-indigo-700 transition">
+            Espacios
+          </a>
+        </li>
+        <li>
+          <a routerLink="horarios" class="hover:underline px-3 py-2 rounded-md hover:bg-indigo-700 transition">
+            Horarios
+          </a>
+        </li>
+        <li>
+          <a routerLink="tarifas" class="hover:underline px-3 py-2 rounded-md hover:bg-indigo-700 transition">
+            Tarifas
+          </a>
+        </li>
+        <li>
+          <button
+            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-200"
+            (click)="logout()"
+          >
+            Cerrar Sesión
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Contenido del dashboard -->
+  <div class="container mx-auto p-6">
+    <router-outlet></router-outlet>
+  </div>
+
+  <div>
+    <app-footer></app-footer>
+  </div>
+</div>

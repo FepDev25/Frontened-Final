@@ -1,0 +1,81 @@
+<div class="container mx-auto p-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold text-indigo-800">Mi Perfil</h2>
+  
+    <div *ngIf="mensajeExito" class="bg-green-100 text-green-700 p-2 rounded mt-4">
+      {{ mensajeExito }}
+    </div>
+    <div *ngIf="mensajeError" class="bg-red-100 text-red-700 p-2 rounded mt-4">
+      {{ mensajeError }}
+    </div>
+  
+    <form *ngIf="perfilForm" [formGroup]="perfilForm" (ngSubmit)="guardarCambios()" class="mt-6 space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Nombre</label>
+          <input type="text" formControlName="nombre" class="border p-2 w-full rounded">
+        </div>
+  
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Apellido</label>
+          <input type="text" formControlName="apellido" class="border p-2 w-full rounded">
+        </div>
+      </div>
+  
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Cédula</label>
+          <input type="text" formControlName="cedula" class="border p-2 w-full rounded">
+        </div>
+  
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Correo</label>
+          <input type="email" formControlName="correo" class="border p-2 w-full rounded" [disabled]="true" /> 
+        </div>
+      </div>
+  
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Teléfono</label>
+          <input type="text" formControlName="telefono" class="border p-2 w-full rounded">
+        </div>
+  
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Dirección</label>
+          <input type="text" formControlName="direccion" class="border p-2 w-full rounded">
+        </div>
+      </div>
+  
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Fecha de Nacimiento</label>
+          <input type="date" formControlName="fechaNacimiento" class="border p-2 w-full rounded">
+        </div>
+  
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Género</label>
+          <select formControlName="genero" class="border p-2 w-full rounded">
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+          </select>
+        </div>
+      </div>
+  
+      <div class="flex justify-end space-x-4 mt-6">
+        <button type="button" (click)="activarEdicion()" *ngIf="!editMode"
+          class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-700">
+          Editar
+        </button>
+  
+        <button type="button" (click)="cancelarEdicion()" *ngIf="editMode"
+          class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">
+          Cancelar
+        </button>
+  
+        <button type="submit" *ngIf="editMode"
+          class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700">
+          Guardar Cambios
+        </button>
+      </div>
+    </form>
+  </div>
+  

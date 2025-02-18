@@ -1,0 +1,83 @@
+<div class="container mx-auto p-6">
+    <h2 class="text-2xl font-bold text-indigo-800 mb-4">Lista de Espacios</h2>
+  
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      <div 
+        *ngFor="let espacio of espaciosPaginados" 
+        class="p-4 rounded text-center border shadow-lg cursor-pointer hover:opacity-80 transition-all duration-300"
+        [ngClass]="obtenerClaseEstado(espacio)"
+        (click)="seleccionarEspacio(espacio)">
+        <p class="font-bold">Sitio {{ espacio.id }}</p>
+        <p *ngIf="espacio.ocupado">🔴 Ocupado</p>
+        <p *ngIf="espacio.reservado && !espacio.ocupado">🟠 Reservado</p>
+        <p *ngIf="!espacio.ocupado && !espacio.reservado">🟢 Disponible</p>
+      </div>
+    </div>
+  
+    <div class="mt-6 flex justify-between">
+      <button class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition"
+        (click)="cambiarPagina(-1)" [disabled]="paginaActual === 0">⬅️ Anterior</button>
+  
+      <button class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition"
+        (click)="cambiarPagina(1)" [disabled]="(paginaActual + 1) * espaciosPorPagina >= espacios.length">Siguiente ➡️</button>
+    </div>
+  
+    <div *ngIf="espacioSeleccionado" class="mt-8 p-6 bg-white shadow-md rounded-lg">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">
+          Crear Contrato - <span class="text-indigo-600">Espacio #{{ espacioSeleccionado.id }}</span>
+        </h3>
+      
+        <form [formGroup]="contratoForm" (ngSubmit)="crearContrato()">
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700">Fecha de Inicio</label>
+            <input type="date" formControlName="fechaInicio" class="border p-2 w-full rounded">
+          </div>
+      
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700">Fecha de Fin</label>
+            <input type="date" formControlName="fechaFin" class="border p-2 w-full rounded">
+          </div>
+      
+          <p class="text-lg font-semibold">
+            Total: <span class="text-green-600 font-bold">${{ calcularMontoTotal() }}</span>
+          </p>
+      
+          <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded mt-4 hover:bg-green-600">
+            Confirmar Contrato
+          </button>
+        </form>
+      </div>
+
+
+      <div class="mt-10">
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Mis Contratos Activos</h3>
+      
+        <table class="min-w-full bg-white border border-gray-300 shadow-md rounded-lg overflow-hidden">
+          <thead class="bg-gray-200">
+            <tr>
+              <th class="py-2 px-4 border-b">#</th>
+              <th class="py-2 px-4 border-b">Espacio</th>
+              <th class="py-2 px-4 border-b">Fecha Inicio</th>
+              <th class="py-2 px-4 border-b">Fecha Fin</th>
+              <th class="py-2 px-4 border-b">Monto Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let contrato of contratos; let i = index" class="hover:bg-gray-100">
+              <td class="py-2 px-4 border-b">{{ i + 1 }}</td>
+              <td class="py-2 px-4 border-b">Espacio #{{ contrato.espacio.id }}</td>
+              <td class="py-2 px-4 border-b">{{ contrato.fechaInicio }}</td>
+              <td class="py-2 px-4 border-b">{{ contrato.fechaFin }}</td>
+              <td class="py-2 px-4 border-b font-semibold">$ {{ contrato.montoTotal }}</td>
+            </tr>
+          </tbody>
+        </table>
+      
+        <div *ngIf="contratos.length === 0" class="text-center text-gray-500 mt-4">
+          No tienes contratos activos.
+        </div>
+      </div>
+      
+      
+  </div>
+  

@@ -1,0 +1,32 @@
+<div class="container mx-auto p-6">
+    <h2 class="text-2xl font-bold text-indigo-800 mb-4">Lista de Espacios</h2>
+  
+    <!-- Grid de Espacios -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      <div 
+        *ngFor="let espacio of espaciosPaginados" 
+        class="p-4 rounded text-center border shadow-lg cursor-pointer hover:opacity-80 transition-all duration-300"
+        [ngClass]="obtenerClaseEstado(espacio)">
+        <p class="font-bold">Sitio {{ espacio.id }}</p>
+        <p *ngIf="espacio.ocupado">🔴 Ocupado</p>
+        <p *ngIf="espacio.reservado && !espacio.ocupado">🟠 Reservado</p>
+        <p *ngIf="!espacio.ocupado && !espacio.reservado">🟢 Disponible</p>
+      </div>
+    </div>
+  
+    <!-- Paginación -->
+    <div class="mt-6 flex justify-between">
+      <button 
+        class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition"
+        (click)="cambiarPagina(-1)" 
+        [disabled]="paginaActual === 0">⬅️ Anterior
+      </button>
+  
+      <button 
+        class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition"
+        (click)="cambiarPagina(1)" 
+        [disabled]="(paginaActual + 1) * espaciosPorPagina >= espacios.length">Siguiente ➡️
+      </button>
+    </div>
+  </div>
+  
