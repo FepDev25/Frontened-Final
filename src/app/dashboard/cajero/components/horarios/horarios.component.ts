@@ -157,12 +157,6 @@ export class HorariosComponent implements OnInit {
     // Si hay una excepción futura, se mantiene en `this.proximaExcepcion`
   }
   
-  
-  
-  
-  
-  
-  
 
   editarHorario(horario: Horario): void {
     this.horarioEditando = { ...horario };

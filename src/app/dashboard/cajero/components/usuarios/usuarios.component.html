@@ -1,1 +1,117 @@
-<p>usuarios works!</p>
+<div class="container mx-auto p-6">
+  <h2 class="text-2xl font-bold text-indigo-800 mb-4">Gestión de Usuarios</h2>
+
+  <!-- Mensajes -->
+  <div *ngIf="mensaje" class="p-3 rounded mb-4" [ngClass]="mensajeClase">
+    {{ mensaje }}
+  </div>
+
+  <!-- Tabla de Usuarios -->
+  <div class="overflow-x-auto bg-white p-4 rounded shadow-md mb-6">
+    <h3 class="text-lg font-bold text-gray-800 mb-3">Lista de Usuarios</h3>
+
+    <table class="min-w-full border border-gray-300 shadow-md rounded-lg">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="py-2 px-4 border-b">Cédula</th>
+          <th class="py-2 px-4 border-b">Nombre</th>
+          <th class="py-2 px-4 border-b">Correo</th>
+          <th class="py-2 px-4 border-b">Teléfono</th>
+          <th class="py-2 px-4 border-b">Dirección</th>
+          <th class="py-2 px-4 border-b">Fecha de Registro</th>
+          <th class="py-2 px-4 border-b">Rol</th>
+          <th class="py-2 px-4 border-b">Editar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let usuario of usuarios" class="hover:bg-gray-100">
+          <td class="py-2 px-4 border-b">{{ usuario.persona.cedula }}</td>
+          <td class="py-2 px-4 border-b">{{ usuario.persona.nombre }} {{ usuario.persona.apellido }}</td>
+          <td class="py-2 px-4 border-b">{{ usuario.persona.correo }}</td>
+          <td class="py-2 px-4 border-b">{{ usuario.persona.telefono || 'N/A' }}</td>
+          <td class="py-2 px-4 border-b">{{ usuario.persona.direccion || 'N/A' }}</td>
+          <td class="py-2 px-4 border-b">{{ usuario.fechaRegistro }}</td>
+          <td class="py-2 px-4 border-b">{{ usuario.persona.rol.nombre }}</td>
+          <td class="py-2 px-4 border-b">
+            <button class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 mr-2" 
+                    (click)="editarUsuario(usuario)">
+              ✏️ Editar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Tabla de Cajeros -->
+  <div class="overflow-x-auto bg-white p-4 rounded shadow-md">
+    <h3 class="text-lg font-bold text-gray-800 mb-3">Lista de Cajeros</h3>
+
+    <table class="min-w-full border border-gray-300 shadow-md rounded-lg">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="py-2 px-4 border-b">Cédula</th>
+          <th class="py-2 px-4 border-b">Nombre</th>
+          <th class="py-2 px-4 border-b">Correo</th>
+          <th class="py-2 px-4 border-b">Teléfono</th>
+          <th class="py-2 px-4 border-b">Dirección</th>
+          <th class="py-2 px-4 border-b">Fecha de Ingreso</th>
+          <th class="py-2 px-4 border-b">Sueldo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cajero of cajeros" class="hover:bg-gray-100">
+          <td class="py-2 px-4 border-b">{{ cajero.persona.cedula }}</td>
+          <td class="py-2 px-4 border-b">{{ cajero.persona.nombre }} {{ cajero.persona.apellido }}</td>
+          <td class="py-2 px-4 border-b">{{ cajero.persona.correo }}</td>
+          <td class="py-2 px-4 border-b">{{ cajero.persona.telefono || 'N/A' }}</td>
+          <td class="py-2 px-4 border-b">{{ cajero.persona.direccion || 'N/A' }}</td>
+          <td class="py-2 px-4 border-b">{{ cajero.fechaIngreso }}</td>
+          <td class="py-2 px-4 border-b font-semibold text-green-600">$ {{ cajero.sueldo.toFixed(2) }}</td>
+          
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+
+
+
+  <!-- Formulario de Edición de Usuario -->
+<div *ngIf="usuarioEditando" class="bg-white p-4 rounded shadow-md mb-4">
+  <h3 class="text-lg font-bold text-gray-800">Editar Usuario</h3>
+
+  <form [formGroup]="usuarioEditForm" (ngSubmit)="guardarEdicion()">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <input type="text" formControlName="nombre" placeholder="Nombre" class="border p-2 rounded w-full">
+      <input type="text" formControlName="apellido" placeholder="Apellido" class="border p-2 rounded w-full">
+      <input type="email" formControlName="correo" placeholder="Correo" class="border p-2 rounded w-full">
+      <input type="text" formControlName="telefono" placeholder="Teléfono" class="border p-2 rounded w-full">
+      <input type="text" formControlName="direccion" placeholder="Dirección" class="border p-2 rounded w-full">
+      
+      <select formControlName="estado" class="border p-2 rounded w-full">
+        <option value="ACTIVO">Activo</option>
+        <option value="INACTIVO">Inactivo</option>
+      </select>
+
+      <select formControlName="genero" class="border p-2 rounded w-full">
+        <option value="MASCULINO">Masculino</option>
+        <option value="FEMENINO">Femenino</option>
+        <option value="OTRO">Otro</option>
+      </select>
+    </div>
+
+    <div class="mt-4 flex space-x-4">
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        Guardar Cambios
+      </button>
+      <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600" 
+              (click)="cancelarEdicion()">
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>
+
+</div>

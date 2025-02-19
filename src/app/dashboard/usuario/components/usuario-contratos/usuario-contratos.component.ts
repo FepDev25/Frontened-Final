@@ -44,7 +44,7 @@ export class UsuarioContratosComponent implements OnInit {
     this.cargarTarifa();
     this.usuarioActual = this.authService.getUser();
     this.inicializarFormulario();
-    this.cargarContratosUsuario();
+    this.cargarContratosUsuario(); 
   }
   
   cargarContratosUsuario(): void {

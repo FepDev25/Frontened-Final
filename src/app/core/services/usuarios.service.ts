@@ -23,6 +23,9 @@ export class UsuariosService {
     return this.http.get<Usuario>(`${this.apiUrl}/correo/${correo}`);
   }
 
+  getUsuarioByCedula(cedula: string): Observable<Usuario> {
+    return this.http.get<Usuario>(`${this.apiUrl}/cedula/${cedula}`);
+  }
 
   createUsuario(usuario: Usuario): Observable<Usuario> {
     return this.http.post<Usuario>(this.apiUrl, usuario);

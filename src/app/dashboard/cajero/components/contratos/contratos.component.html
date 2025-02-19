@@ -1,1 +1,103 @@
-<p>contratos works!</p>
+<div class="container mx-auto p-6">
+    <h2 class="text-2xl font-bold text-indigo-800 mb-4">Gestión de Contratos</h2>
+  
+    <!-- Mensajes -->
+    <div *ngIf="mensaje" class="p-3 rounded mb-4" [ngClass]="mensajeClase">
+      {{ mensaje }}
+    </div>
+  
+    <!-- Formulario para agregar contrato -->
+    <div class="bg-white p-4 rounded shadow-md mb-4">
+      <h3 class="text-lg font-bold text-gray-800">Agregar Nuevo Contrato</h3>
+  
+      <form [formGroup]="contratoForm" (ngSubmit)="agregarContrato()">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <input type="text" formControlName="usuarioCedula" placeholder="Cédula del Usuario" class="border p-2 rounded w-full">
+        <input type="number" formControlName="espacioId" placeholder="ID del Espacio" class="border p-2 rounded w-full">
+        <input type="date" formControlName="fechaInicio" (change)="calcularMontoTotal()" class="border p-2 rounded w-full">
+        <input type="date" formControlName="fechaFin" (change)="calcularMontoTotal()" class="border p-2 rounded w-full">
+        <input type="text" [value]="'$' + montoTotal.toFixed(2)" class="border p-2 rounded w-full bg-gray-100" readonly>
+
+        </div>
+  
+        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded mt-4 hover:bg-green-600">
+          Agregar Contrato
+        </button>
+      </form>
+    </div>
+
+    <!-- Formulario de Edición de Contrato -->
+    <div *ngIf="contratoEditando" class="bg-white p-4 rounded shadow-md mb-4">
+      <h3 class="text-lg font-bold text-gray-800">Editar Contrato</h3>
+
+      <!-- Formulario de Edición de Contrato -->
+      <form [formGroup]="contratoEditForm" (ngSubmit)="guardarEdicion()">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <input type="text" formControlName="usuarioCedula" placeholder="Cédula del Usuario" class="border p-2 rounded w-full" readonly>
+          <input type="number" formControlName="espacioId" placeholder="ID del Espacio" class="border p-2 rounded w-full" readonly>
+          <input type="date" formControlName="fechaInicio" (change)="calcularMontoTotal(true)" class="border p-2 rounded w-full">
+          <input type="date" formControlName="fechaFin" (change)="calcularMontoTotal(true)" class="border p-2 rounded w-full">
+          <input type="text" formControlName="montoTotal" class="border p-2 rounded w-full bg-gray-100" readonly>
+        </div>
+
+        <div class="flex space-x-4 mt-4">
+          <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Guardar Cambios</button>
+          <button type="button" (click)="cancelarEdicion()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Cancelar</button>
+        </div>
+</form>
+
+    </div>
+
+
+  
+    <!-- Tabla de Contratos -->
+    <div class="overflow-x-auto bg-white p-4 rounded shadow-md">
+      <h3 class="text-lg font-bold text-gray-800 mb-3">Lista de Contratos</h3>
+  
+      <table class="min-w-full border border-gray-300 shadow-md rounded-lg">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="py-2 px-4 border-b">Cédula Usuario</th>
+            <th class="py-2 px-4 border-b">Nombre Usuario</th>
+            <th class="py-2 px-4 border-b">ID Espacio</th>
+            <th class="py-2 px-4 border-b">Fecha Inicio</th>
+            <th class="py-2 px-4 border-b">Fecha Fin</th>
+            <th class="py-2 px-4 border-b">Monto Total</th>
+            <th class="py-2 px-4 border-b">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let contrato of contratosPaginados" class="hover:bg-gray-100">
+            <td class="py-2 px-4 border-b">{{ contrato.usuario.persona.cedula }}</td>
+            <td class="py-2 px-4 border-b">{{ contrato.usuario.persona.nombre }}</td>
+            <td class="py-2 px-4 border-b">Espacio #{{ contrato.espacio.id }}</td>
+            <td class="py-2 px-4 border-b">{{ contrato.fechaInicio }}</td>
+            <td class="py-2 px-4 border-b">{{ contrato.fechaFin }}</td>
+            <td class="py-2 px-4 border-b font-semibold text-green-600">$ {{ contrato.montoTotal.toFixed(2) }}</td>
+            <td class="py-2 px-4 border-b">
+              <button class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 mr-2" 
+                      (click)="editarContrato(contrato)">
+                ✏️ Editar
+              </button>
+              <button class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                      (click)="eliminarContrato(contrato.id)">
+                🗑️ Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Paginación -->
+    <div class="mt-6 flex justify-between">
+        <button class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition"
+                (click)="cambiarPagina(-1)" 
+                [disabled]="paginaActual === 0">⬅️ Anterior</button>
+
+        <button class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition"
+                (click)="cambiarPagina(1)" 
+                [disabled]="(paginaActual + 1) * contratosPorPagina >= contratos.length">Siguiente ➡️</button>
+    </div>
+  </div>
+  
