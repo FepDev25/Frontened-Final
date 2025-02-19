@@ -1,10 +1,9 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-
+  { path: 'inicio', loadComponent: () => import('./shared/components/inicio/inicio.component').then(m => m.InicioComponent) },
+  
   {
     path: 'auth',
     loadChildren: () => import('./auth/auth.routes').then(m => m.authRoutes)
@@ -24,5 +23,5 @@ export const routes: Routes = [
     data: { role: 'Cajero' }
   },
 
-  { path: '**', redirectTo: '' } 
+  { path: '**', redirectTo: '/inicio' }
 ];

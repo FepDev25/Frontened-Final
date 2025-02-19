@@ -25,36 +25,34 @@
     </div>
   
     <!-- Listado de Vehículos -->
-    <div class="bg-white shadow-md rounded-lg p-6">
-      <h3 class="text-xl font-semibold mb-4">Lista de Vehículos</h3>
+    <div *ngIf="vehiculos.length > 0" class="mt-6">
+      <h2 class="text-xl font-bold text-indigo-900 dark:text-black mb-4 text-center"> Tus Vehículos</h2>
   
-      <table class="min-w-full bg-white border border-gray-300 shadow-md rounded-lg overflow-hidden">
-        <thead class="bg-gray-200">
-          <tr>
-            <th class="py-2 px-4 border-b">#</th>
-            <th class="py-2 px-4 border-b">Placa</th>
-            <th class="py-2 px-4 border-b">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let vehiculo of vehiculos; let i = index" class="hover:bg-gray-100">
-            <td class="py-2 px-4 border-b">{{ i + 1 }}</td>
-            <td class="py-2 px-4 border-b">{{ vehiculo.placa }}</td>
-            <td class="py-2 px-4 border-b space-x-2">
-              <button class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition" (click)="editarVehiculo(vehiculo)">
-                ✏️ Editar
-              </button>
-              <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition" (click)="eliminarVehiculo(vehiculo.id)">
-                🗑️ Eliminar
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <div *ngFor="let vehiculo of vehiculos" 
+               class="bg-white shadow-2xl rounded-lg p-4 transition transform hover:scale-105">
+              
+              <!-- Información del Vehículo -->
+              <h3 class="text-lg font-semibold text-gray-800 text-center">🚘 {{ vehiculo.placa }}</h3>
   
-      <div *ngIf="vehiculos.length === 0" class="text-center text-gray-500 mt-4">
-        No tienes vehículos registrados.
+              <!-- Botones de Acción -->
+              <div class="flex justify-center gap-3 mt-3">
+                  <button class="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 transition"
+                          (click)="editarVehiculo(vehiculo)">
+                      ✏️ Editar
+                  </button>
+                  <button class="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600 transition"
+                          (click)="eliminarVehiculo(vehiculo.id)">
+                      🗑️ Eliminar
+                  </button>
+              </div>
+          </div>
       </div>
-    </div>
   </div>
+  
+  <!-- Si no hay vehículos -->
+  <div *ngIf="vehiculos.length === 0" class="text-center text-gray-500 mt-4">
+      No tienes vehículos registrados.
+  </div>
+  
   

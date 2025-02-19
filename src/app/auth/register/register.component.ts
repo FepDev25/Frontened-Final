@@ -3,12 +3,14 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../auth.service';
+import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
+import { FooterComponent } from '../../shared/components/footer/footer.component';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   templateUrl: './register.component.html',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule,NavbarComponent,FooterComponent],
 })
 export class RegisterComponent {
   private _formBuilder = inject(FormBuilder);
@@ -69,7 +71,6 @@ export class RegisterComponent {
       this.exito = true;
       this.form.reset();
 
-      // Redirigir según el rol
       if (loginResponse.role === 'Cajero') {
         this._router.navigate(['/dashboard-cajero']);
       } else {
@@ -80,5 +81,38 @@ export class RegisterComponent {
       this.mensaje = 'Hubo un problema al crear tu cuenta. Intenta nuevamente.';
       this.exito = false;
     }
+  }
+  async signInGoogle() {
+    console.log('Registrarse con Google (por implementar)');
+  }
+  
+  esRequerido(field: string): boolean {
+    const control = this.form.get(field);
+    return !!control && control.hasError('required') && control.touched;
+  }
+  
+  esCedulaValida(): boolean {
+    const control = this.form.get('cedula');
+    return !!control && control.hasError('pattern') && control.touched;
+  }
+  
+  esFechaNacimientoValida(): boolean {
+    const control = this.form.get('fechaNacimiento');
+    return !!control && control.hasError('fechaInvalida') && control.touched;
+  }
+  
+  esDireccionValida(): boolean {
+    const control = this.form.get('direccion');
+    return !!control && control.hasError('pattern') && control.touched;
+  }
+  
+  esEmailValido(): boolean {
+    const control = this.form.get('email');
+    return !!control && control.hasError('email') && control.touched;
+  }
+  
+  esPasswordValida(): boolean {
+    const control = this.form.get('password');
+    return !!control && control.hasError('minlength') && control.touched;
   }
 }

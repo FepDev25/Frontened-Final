@@ -13,10 +13,10 @@ export const dashboardUsuarioRoutes: Routes = [
     canActivate: [AuthGuard],  
     data: { role: 'Usuario' },
     children: [
-      { path: 'perfil', component: MiPerfilComponent },
-      { path: 'usuario-contratos', component: UsuarioContratosComponent },
+      { path: 'mi-perfil', component: MiPerfilComponent },
+      { path: 'contratos-usuario', component: UsuarioContratosComponent },
       { path: 'inicio-usuario', component: InicioUsuarioComponent },
-      { path: 'vehiculos-usuario', component: VehiculosUsuarioComponent },
+      { path: 'vehiculos-usuario', component: VehiculosUsuarioComponent},
       { path: '**', redirectTo: 'inicio-usuario' } 
     ]
   }

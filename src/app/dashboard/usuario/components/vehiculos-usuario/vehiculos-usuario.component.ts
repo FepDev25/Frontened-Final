@@ -29,6 +29,7 @@ export class VehiculosUsuarioComponent implements OnInit {
   ngOnInit(): void {
     this.obtenerUsuarioActual();
     this.inicializarFormulario();
+    
   }
 
   obtenerUsuarioActual(): void {

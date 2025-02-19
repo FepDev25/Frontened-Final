@@ -17,6 +17,8 @@ export class TarifasComponent implements OnInit {
   nuevaTarifaForm!: FormGroup;
   tarifaEditando: Tarifa | null = null;
   tarifaActiva: Tarifa | null = null;
+  mensajeConfirmacion: string | null = null;
+
 
   constructor(
     private tarifaService: TarifaService,

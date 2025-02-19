@@ -1,1 +1,117 @@
-<p>inicio-usuario works!</p>
+<section class="bg-white border-b py-8">
+
+  <div class="p-4 rounded-lg text-center"
+     [class.bg-green-500]="localAbierto && !excepcionActiva"
+     [class.bg-red-500]="!localAbierto">
+    <p class="text-white font-semibold">
+      <span *ngIf="localAbierto && !proximaExcepcion">El local está ABIERTO</span>
+      <span *ngIf="localAbierto && proximaExcepcion">El local está ABIERTO - Excepción próxima: {{ proximaExcepcion }}</span>
+      <span *ngIf="!localAbierto && excepcionActiva">El local está CERRADO por excepción</span>
+      <span *ngIf="!localAbierto && !excepcionActiva">El local está CERRADO</span>
+    </p>
+
+    <p *ngIf="horarioHoy" class="text-white text-sm mt-2">
+      🕒 Horario habitual: {{ horarioHoy.horaApertura }} - {{ horarioHoy.horaCierre }} ({{ horarioHoy.tipoHorario.descripcion }})
+    </p>
+
+    <p *ngIf="exceptionHoy && excepcionActiva" class="text-white text-sm mt-2">
+      🚨 Cierre inesperado: 
+      <span *ngIf="exceptionHoy.cierreTodoDia">Todo el día</span>
+      <span *ngIf="!exceptionHoy.cierreTodoDia">
+        {{ exceptionHoy.horaApertura }} - {{ exceptionHoy.horaCierre }}
+      </span>
+    </p>
+
+    <p *ngIf="proximaExcepcion" class="text-white text-sm mt-2">
+      ⏳ Excepción próxima: {{ proximaExcepcion }}
+    </p>
+</div>
+
+
+
+    <div class="container max-w-5xl mx-auto m-8">
+      <h2 class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
+        Bienvenido al Parqueadero
+      </h2>
+      <div class="w-full mb-4">
+        <div class="h-1 mx-auto gradient w-64 opacity-25 my-0 py-0 rounded-t"></div>
+      </div>
+  
+      <div class="flex flex-wrap">
+        <div class="w-full sm:w-1/2 p-6">
+          <h3 class="text-3xl text-gray-800 font-bold leading-none mb-3">
+            Consulta la Disponibilidad de Espacios
+          </h3>
+          <p class="text-gray-600 mb-8">
+            ¿Necesitas saber si hay espacios disponibles? Desde esta sección puedes consultar la disponibilidad de espacios en tiempo real. Simplemente ingresa y revisa el estado actual del parqueadero, asegurándote de que haya lugar antes de tu llegada.
+            <br />
+            <br />
+          </p>
+        </div>
+        <div class="w-full sm:w-1/2 p-6">
+            <img class="w-full sm:h-64 mx-auto" src="assets/img/disponibilidad.png" alt="Consulta la disponibilidad de espacios" />
+        </div>
+      </div>
+  
+      <div class="flex flex-wrap flex-col-reverse sm:flex-row">
+        <div class="w-full sm:w-1/2 p-6 mt-6">
+            <img class="w-full max-w-xs mx-auto" src="assets/img/reserva.png" alt="Reserva de espacios" />
+        </div>
+        <div class="w-full sm:w-1/2 p-6 mt-6">
+          <div class="align-middle">
+            <h3 class="text-3xl text-gray-800 font-bold leading-none mb-3">
+              Reserva tu Espacio
+            </h3>
+            <p class="text-gray-600 mb-8">
+              Evita problemas y asegura tu espacio reservándolo con anticipación. Nuestro sistema de reservas en línea te permite apartar un lugar para cuando llegues, garantizando que siempre tengas un sitio para estacionarte, incluso en horas de alta demanda.
+              <br />
+              <br />
+            </p>
+          </div>
+        </div>
+      </div>
+  
+      <div class="flex flex-wrap">
+        <div class="w-full sm:w-1/2 p-6">
+          <h3 class="text-3xl text-gray-800 font-bold leading-none mb-3">
+            Tarifas y Métodos de Pago
+          </h3>
+          <p class="text-gray-600 mb-8">
+            Conoce nuestras tarifas y las opciones de pago disponibles. Ofrecemos precios competitivos y facilidades de pago para adaptarnos a tus necesidades. Puedes pagar directamente desde la plataforma de manera rápida y segura, ahorrando tiempo al ingresar y salir del parqueadero.
+            <br />
+            <br />
+          </p>
+        </div>
+        <div class="w-full sm:w-1/2 p-6">
+          <img class="w-full sm:w-1/2 sm:h-auto mt-4 sm:mt-0 mx-auto rounded-lg shadow-lg" src="assets/img/tarifas.webp" alt="Tarifas y métodos de pago" />
+        </div>
+      </div>
+  
+      <div class="flex flex-wrap flex-col-reverse sm:flex-row">
+        <div class="w-full sm:w-1/2 p-6 mt-6">
+            <img class="w-full max-w-xs mx-auto" src="assets/img/vehiculos.png" alt="Gestión de Vehículos" />
+        </div>
+        <div class="w-full sm:w-1/2 p-6 mt-6">
+          <div class="align-middle">
+            <h3 class="text-3xl text-gray-800 font-bold leading-none mb-3">
+              Gestión de Vehículos
+            </h3>
+            <p class="text-gray-600 mb-8">
+              Registra los vehículos que utilizarás en el parqueadero para una mejor gestión y acceso más rápido. Agrega, edita o elimina vehículos de tu cuenta para agilizar el ingreso al estacionamiento.
+            </p>
+          </div>
+        </div>
+      </div>
+  
+      <section class="contact container mx-auto py-20 text-center" id="contactSection">
+          <h2 class="text-3xl md:text-4xl font-bold text-blue-800 mb-4">Soporte al Cliente</h2>
+          <p class="text-lg text-gray-700 mb-6">¿Tienes alguna consulta o problema? ¡Contáctanos, estamos aquí para ayudarte!</p>
+          <form class="flex flex-col items-center">
+              <input type="email" placeholder="Correo Electrónico" required class="w-full md:w-1/2 px-4 py-2 mb-4 border border-blue-300 rounded-lg focus:outline-none focus:border-blue-500 shadow-sm">
+              <textarea placeholder="Escribe tu mensaje aquí" required class="w-full md:w-1/2 px-4 py-2 mb-4 border border-blue-300 rounded-lg focus:outline-none focus:border-blue-500 shadow-sm h-32 resize-none"></textarea>
+              <button type="submit" class="px-10 py-4 bg-blue-800 hover:bg-blue-700 text-white rounded-full font-semibold uppercase text-lg transition duration-300">Enviar</button>
+          </form> 
+      </section>
+    </div>
+  </section>
+  

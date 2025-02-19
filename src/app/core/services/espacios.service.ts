@@ -46,4 +46,11 @@ export class EspaciosService {
   desmarcarOcupado(id: number): Observable<Espacio> {
     return this.http.put<Espacio>(`${this.apiUrl}/${id}/desmarcar-ocupado`, {});
   }
+  cancelarContrato(idContrato: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/contratos/${idContrato}`);
+  }
+  liberarEspacio(idContrato: number): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/espacios/liberar/${idContrato}`, {});
+  }
+  
 }

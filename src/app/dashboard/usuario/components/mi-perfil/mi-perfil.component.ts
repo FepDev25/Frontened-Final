@@ -6,6 +6,7 @@ import { Persona } from '../../../../models/persona.model';
 import { Usuario } from '../../../../models/usuario.model';
 import { AuthService } from '../../../../auth/auth.service';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-mi-perfil',
@@ -21,21 +22,25 @@ export class MiPerfilComponent implements OnInit {
   editMode: boolean = false;
   mensajeExito: string | null = null;
   mensajeError: string | null = null;
+  localPhoto: string = '';
+
 
   constructor(
     private authService: AuthService,
     private personaService: PersonasService,
     private usuarioService: UsuariosService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.obtenerUsuarioAutenticado();
-  }
+    const storedPhoto = localStorage.getItem('profile-photo');
+    this.localPhoto = storedPhoto || 'assets/img/undraw_Male_avatar_g98d.png';
+    }
 
   obtenerUsuarioAutenticado(): void {
     const usuarioAuth = this.authService.getUser();
-    
     if (!usuarioAuth || !usuarioAuth.username) {
       console.error('No hay un usuario autenticado.');
       return;
@@ -91,11 +96,31 @@ export class MiPerfilComponent implements OnInit {
         this.mensajeExito = "Perfil actualizado correctamente.";
         this.mensajeError = null;
         this.editMode = false;
+        setTimeout(() => {
+          this.mensajeExito = null;
+        }, 3000); 
+      
       },
       (error) => {
         console.error('Error al actualizar perfil:', error);
         this.mensajeError = "Error al actualizar el perfil.";
-      }
+        setTimeout(() => {
+          this.mensajeExito = null;
+        }, 3000); 
+      }   
     );
   }
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.localPhoto = reader.result as string;
+        localStorage.setItem('profile-photo', this.localPhoto); 
+        this.cdRef.detectChanges();
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  
 }

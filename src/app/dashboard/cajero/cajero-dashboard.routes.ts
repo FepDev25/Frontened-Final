@@ -23,6 +23,7 @@ export const dashboardCajeroRoutes: Routes = [
       { path: 'inicio-cajero', component : InicioCajeroComponent},
       { path: 'tarifas', component : TarifasComponent},
       { path: 'historial', component : HistorialComponent},
+
       { path: '**', redirectTo: 'inicio-cajero' } 
     ]
   }

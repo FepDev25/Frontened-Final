@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { FooterComponent } from '../../../shared/footer/footer.component';
 import { AuthService } from '../../../auth/auth.service';
+import { FooterComponent } from '../../../shared/components/footer/footer.component';
 
 @Component({
   selector: 'app-cajero-dashboard',
