@@ -21,11 +21,16 @@ export class TicketsService {
     return this.getAllTickets().pipe(
       map((tickets: Ticket[]) =>
         tickets
-          .filter(ticket => !ticket.horaSalida) // Filtrar los que aún no han sido liberados
-          .find(ticket => ticket.espacio.id === espacioId) // Buscar el que tiene el espacio deseado
+          .filter(ticket => !ticket.horaSalida) 
+          .find(ticket => ticket.espacio.id === espacioId)
       )
     );
   }
+
+  getTicketsPorFecha(fechaInicio: string): Observable<Ticket[]> {
+    return this.http.get<Ticket[]>(`${this.apiUrl}/fecha/${fechaInicio}`);
+  }
+
 
   getTicketById(id: number): Observable<Ticket> {
     return this.http.get<Ticket>(`${this.apiUrl}/${id}`);

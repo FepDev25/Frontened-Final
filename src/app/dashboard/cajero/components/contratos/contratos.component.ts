@@ -285,18 +285,37 @@ export class ContratosComponent implements OnInit {
 
   eliminarContrato(id: number): void {
     if (!confirm("¿Estás seguro de eliminar este contrato?")) return;
-
+  
+    // 🟢 Obtener el contrato antes de eliminarlo
+    const contrato = this.contratos.find(c => c.id === id);
+    if (!contrato) {
+      this.mostrarMensaje("No se encontró el contrato a eliminar.", 'error');
+      return;
+    }
+  
+    const espacioId = contrato.espacio.id;
+  
     this.contratosService.deleteContrato(id).subscribe({
       next: () => {
         this.contratos = this.contratos.filter(c => c.id !== id);
         this.paginarContratos();
         this.mostrarMensaje("Contrato eliminado con éxito.", 'success');
+  
+        this.espaciosService.desmarcarReservado(espacioId).subscribe({
+          next: () => console.log(`Espacio #${espacioId} marcado como disponible.`),
+          error: (err) => {
+            console.error("Error al marcar espacio como disponible:", err);
+            this.mostrarMensaje("El contrato fue eliminado, pero el espacio no se pudo liberar.", 'error');
+          }
+        });
       },
       error: (err) => {
         this.mostrarMensaje("Error al eliminar contrato.", 'error');
+        console.error("Error al eliminar contrato:", err);
       }
     });
   }
+  
 
   mostrarMensaje(texto: string, tipo: 'success' | 'error') {
     this.mensaje = texto;

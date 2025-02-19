@@ -7,6 +7,7 @@ import { EspaciosComponent } from './components/espacios/espacios.component';
 import { HorariosComponent } from './components/horarios/horarios.component';
 import { InicioCajeroComponent } from './components/inicio-cajero/inicio-cajero.component';
 import { TarifasComponent } from './components/tarifas/tarifas.component';
+import { HistorialComponent } from './components/historial/historial.component';
 
 export const dashboardCajeroRoutes: Routes = [
   {
@@ -21,6 +22,7 @@ export const dashboardCajeroRoutes: Routes = [
       { path: 'horarios', component : HorariosComponent},
       { path: 'inicio-cajero', component : InicioCajeroComponent},
       { path: 'tarifas', component : TarifasComponent},
+      { path: 'historial', component : HistorialComponent},
       { path: '**', redirectTo: 'inicio-cajero' } 
     ]
   }

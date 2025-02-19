@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Contrato } from '../../models/contrato.model';
 
 @Injectable({
@@ -13,6 +13,10 @@ export class ContratosService {
 
   getAllContratos(): Observable<Contrato[]> {
     return this.http.get<Contrato[]>(this.apiUrl);
+  }
+
+  getContratosPorFecha(fechaInicio: string): Observable<Contrato[]> {
+    return this.http.get<Contrato[]>(`${this.apiUrl}/fecha/${fechaInicio}`);
   }
 
   getContratoById(id: number): Observable<Contrato> {

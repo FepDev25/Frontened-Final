@@ -59,34 +59,6 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
-  guardarEdicion(): void {
-    if (!this.usuarioEditando || !this.usuarioEditForm.valid) return;
-  
-    const usuarioActualizado: Usuario = {
-      ...this.usuarioEditando,
-      persona: {
-        ...this.usuarioEditando.persona,
-        nombre: this.usuarioEditForm.value.nombre,
-        apellido: this.usuarioEditForm.value.apellido,
-        correo: this.usuarioEditForm.value.correo,
-        telefono: this.usuarioEditForm.value.telefono,
-        direccion: this.usuarioEditForm.value.direccion,
-        estado: this.usuarioEditForm.value.estado,
-        genero: this.usuarioEditForm.value.genero
-      }
-    };
-  
-    this.usuariosService.updateUsuario(usuarioActualizado).subscribe({
-      next: (updatedUsuario) => {
-        this.usuarios = this.usuarios.map(u => u.id === updatedUsuario.id ? updatedUsuario : u);
-        this.usuarioEditando = null;
-        this.usuarioEditForm.reset(); // 🔥 Limpia el formulario después de la edición
-        this.mostrarMensaje("Usuario actualizado con éxito.", 'success');
-      },
-      error: () => this.mostrarMensaje("Error al actualizar usuario.", 'error')
-    });
-  }
-  
 
   cancelarEdicion(): void {
     this.usuarioEditando = null;
