@@ -102,11 +102,12 @@ export class TarifasComponent implements OnInit {
 
   agregarTarifa() {
     if (this.nuevaTarifaForm.invalid) {
-return;}
+      return;}
     this.tarifaService.createTarifa(this.nuevaTarifaForm.value).subscribe({
       next: (response) => {
         this.errorMessage = null;
         this.nuevaTarifaForm.reset();
+        this.cargarTarifas();
       },
       error: (error) => {
         this.errorMessage = error.message;

@@ -163,12 +163,19 @@ export class EspaciosComponent implements OnInit {
   
         const horaSalida = new Date();
         const horaEntrada = new Date(ticket.fechaEmision + 'T' + ticket.horaEntrada);
-        const diferenciaHoras = Math.ceil((horaSalida.getTime() - horaEntrada.getTime()) / (1000 * 60 * 60));
-        const montoTotal = diferenciaHoras * this.tarifaActual;
+  
+        // 🔹 Diferencia en minutos
+        const diferenciaMinutos = (horaSalida.getTime() - horaEntrada.getTime()) / (1000 * 60);
+        
+        // 🔹 Convertir a horas exactas (redondeo a 2 decimales)
+        const diferenciaHorasExactas = diferenciaMinutos / 60;
+  
+        // 🔹 Aplicar la tarifa correctamente
+        const montoTotal = parseFloat((diferenciaHorasExactas * this.tarifaActual).toFixed(2));
   
         const ticketActualizado: Ticket = {
           ...ticket,
-          horaSalida: horaSalida.toTimeString().split(' ')[0], 
+          horaSalida: horaSalida.toTimeString().split(' ')[0],
           montoTotal: montoTotal
         };
   
@@ -177,11 +184,7 @@ export class EspaciosComponent implements OnInit {
             this.espacioService.desmarcarOcupado(espacio.id).subscribe({
               next: () => {
                 espacio.ocupado = false;
-                this.mostrarMensaje(`Espacio #${espacio.id} liberado. Total: $${montoTotal.toFixed(2)}`, 'success');
-  
-                // 🔹 Limpiar campos después de éxito
-                this.vehiculoPlaca = '';
-                this.espacioId = null;
+                this.mostrarMensaje(`Espacio #${espacio.id} liberado. Total: $${montoTotal}`, 'success');
               },
               error: () => this.mostrarMensaje("Error al marcar el espacio como disponible.", 'error')
             });

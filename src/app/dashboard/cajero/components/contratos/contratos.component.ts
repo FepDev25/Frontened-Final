@@ -346,10 +346,17 @@ export class ContratosComponent implements OnInit {
       return;
     }
   
-    const diferenciaDias = Math.max(1, (fechaFin.getTime() - fechaInicio.getTime()) / (1000 * 60 * 60 * 24));
-    const nuevoMontoTotal = diferenciaDias * this.tarifaActual;
+    // 🔹 Diferencia total en milisegundos
+    const diferenciaMs = fechaFin.getTime() - fechaInicio.getTime();
   
-    form.patchValue({ montoTotal: nuevoMontoTotal.toFixed(2) });
+    // 🔹 Convertir a días exactos (puede incluir fracción)
+    const diferenciaDiasExactos = diferenciaMs / (1000 * 60 * 60 * 24);
+  
+    // 🔹 Cobrar proporcionalmente si no es un número entero
+    const montoTotal = parseFloat((diferenciaDiasExactos * this.tarifaActual).toFixed(2));
+  
+    form.patchValue({ montoTotal: montoTotal });
   }
+  
   
 }
