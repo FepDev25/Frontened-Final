@@ -196,11 +196,9 @@ export class UsuarioContratosComponent implements OnInit {
               next: () => {
 
                 if (!this.espacioSeleccionado) {
-                  console.log("Error: No se encontró el espacio seleccionado.");
                   return;
                 }
 
-                console.log("Espacio marcado como reservado.");
                 this.espacioSeleccionado.reservado = true;
 
                 this.contratoForm.reset();
@@ -214,7 +212,6 @@ export class UsuarioContratosComponent implements OnInit {
             });
           },
           error: (err) => {
-            console.error("Error al crear el contrato:", err);
             alert("Hubo un error al crear el contrato.");
           }
         });
@@ -251,12 +248,12 @@ export class UsuarioContratosComponent implements OnInit {
   
     const fecha = new Date(control.value);
     const hoy = new Date();
+    hoy.setDate(hoy.getDate() - 1);
     const maxFecha = new Date('2030-12-31');
   
     if (fecha < hoy || fecha > maxFecha) {
       return { fechaInvalida: true };
     }
-  
     return null;
   }
   cancelarContrato(idContrato: number): void {

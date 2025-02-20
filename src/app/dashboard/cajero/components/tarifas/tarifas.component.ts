@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Tarifa } from '../../../../models/tarifa.model';
 import { TarifaService } from '../../../../core/services/tarifa.service';
 import { CommonModule } from '@angular/common';
@@ -18,25 +18,33 @@ export class TarifasComponent implements OnInit {
   tarifaEditando: Tarifa | null = null;
   tarifaActiva: Tarifa | null = null;
   mensajeConfirmacion: string | null = null;
+  errorMessage: string | null = null;
 
 
   constructor(
     private tarifaService: TarifaService,
     private fb: FormBuilder
+    
   ) {}
 
   ngOnInit(): void {
     this.cargarTarifas();
     this.inicializarFormularios();
-  }
+    this.nuevaTarifaForm = this.fb.group({
+      valor: ['', [Validators.required, this.noNegativosValidator]]
+    });
+    }
 
   cargarTarifas(): void {
     this.tarifaService.getAllTarifas().subscribe({
       next: (tarifas) => {
         this.tarifas = tarifas;
+        this.errorMessage = null; 
         this.obtenerTarifaActiva();
       },
-      error: (error) => console.error('Error al cargar tarifas:', error)
+      error: (error) => {
+        this.errorMessage = error.error?.message || 'Error al cargar tarifas';
+      }
     });
   }
 
@@ -91,22 +99,26 @@ export class TarifasComponent implements OnInit {
     });
   }
 
-  agregarTarifa(): void {
-    if (this.nuevaTarifaForm.invalid) return;
 
-    const nuevaTarifa: Tarifa = {
-      id: 0,
-      valor: this.nuevaTarifaForm.value.valor,
-      activa: false
-    };
-
-    this.tarifaService.createTarifa(nuevaTarifa).subscribe({
-      next: (tarifaCreada) => {
-        this.tarifas.push(tarifaCreada);
+  agregarTarifa() {
+    if (this.nuevaTarifaForm.invalid) {
+return;}
+    this.tarifaService.createTarifa(this.nuevaTarifaForm.value).subscribe({
+      next: (response) => {
+        this.errorMessage = null;
         this.nuevaTarifaForm.reset();
       },
-      error: (error) => console.error('Error al crear la tarifa:', error)
+      error: (error) => {
+        this.errorMessage = error.message;
+        setTimeout(() => {
+          this.errorMessage = null;
+        }, 3000);
+      }
     });
+  }
+
+  private noNegativosValidator(control: AbstractControl): ValidationErrors | null {
+    return control.value !== null && control.value < 0 ? { noNegativos: true } : null;
   }
 
   eliminarTarifa(id: number): void {

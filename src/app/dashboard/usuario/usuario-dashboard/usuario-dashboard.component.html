@@ -75,10 +75,10 @@
         </ul>
       </div>
 
+      <!-- Menú desplegable para pantallas pequeñas -->
       <div
-        class="md:hidden"
-        [class.hidden]="!menuOpen"
-        class="block mt-4"
+        [ngClass]="{ 'block': menuOpen, 'hidden': !menuOpen }"
+        class="md:hidden mt-4"
       >
         <ul class="flex flex-col space-y-4">
           <li>
@@ -86,6 +86,7 @@
               routerLink="inicio-usuario"
               routerLinkActive="text-gold-500 font-semibold"
               class="hover:text-gold-500 transition duration-200"
+              (click)="closeMenu()"
               >Inicio</a
             >
           </li>
@@ -94,6 +95,7 @@
               routerLink="contratos-usuario"
               routerLinkActive="text-gold-500 font-semibold"
               class="hover:text-gold-500 transition duration-200"
+              (click)="closeMenu()"
               >Contratos</a
             >
           </li>
@@ -102,6 +104,7 @@
               routerLink="mi-perfil"
               routerLinkActive="text-gold-500 font-semibold"
               class="hover:text-gold-500 transition duration-200"
+              (click)="closeMenu()"
               >Mi perfil</a
             >
           </li>
@@ -110,13 +113,14 @@
               routerLink="vehiculos-usuario"
               routerLinkActive="text-gold-500 font-semibold"
               class="hover:text-gold-500 transition duration-200"
+              (click)="closeMenu()"
               >Vehículos</a
             >
           </li>
           <li>
             <button
               class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-200"
-              (click)="logout()"
+              (click)="logout(); closeMenu()"
             >
               Cerrar Sesión
             </button>
@@ -125,6 +129,8 @@
       </div>
     </nav>
 
+
+  
     <!-- Contenido del dashboard -->
     <div class="flex-1 p-8">
       <router-outlet></router-outlet>
